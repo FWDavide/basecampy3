@@ -95,6 +95,7 @@ class Basecamp3(object):
         self.answers = endpoints.Answers(self)
         self.campfires = endpoints.Campfires(self)
         self.campfire_lines = endpoints.CampfireLines(self)
+        self.card_tables = endpoints.CardTables(self)
         self.messages = endpoints.Messages(self)
         self.message_boards = endpoints.MessageBoards(self)
         self.message_categories = endpoints.MessageCategories(self)

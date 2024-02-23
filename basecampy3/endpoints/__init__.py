@@ -1,6 +1,7 @@
 from .answers import Answers
 from .campfire_lines import CampfireLines
 from .campfires import Campfires
+from .card_tables import CardTables
 from .comments import Comments
 from .message_boards import MessageBoards
 from .message_categories import MessageCategories
