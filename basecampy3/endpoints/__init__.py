@@ -2,6 +2,7 @@ from .answers import Answers
 from .campfire_lines import CampfireLines
 from .campfires import Campfires
 from .card_tables import CardTables
+from .card_table_cards import CardTableCards
 from .card_table_columns import CardTableColumns
 from .comments import Comments
 from .message_boards import MessageBoards
