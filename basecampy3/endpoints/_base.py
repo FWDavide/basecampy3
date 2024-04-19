@@ -156,6 +156,16 @@ class BasecampEndpoint(object):
         item = object_class(json_data, self)
         return item
 
+    def _moves(self, url, data, method="POST", object_class=None):
+        resp = self._api._session.request(method, url, json=data)
+        if not resp.ok:
+            raise Basecamp3Error(response=resp)
+        json_data = resp.json()
+        if object_class is None:
+            object_class = self.OBJECT_CLASS
+        item = object_class(json_data, self)
+        return item
+
     def _update(self, url, data, method="PUT"):
         resp = self._api._session.request(method, url, json=data)
         if not resp.ok:
