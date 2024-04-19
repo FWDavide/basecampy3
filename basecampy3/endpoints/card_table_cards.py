@@ -25,6 +25,8 @@ class CardTableCards(_base.BasecampEndpoint):
 
     GET_URL = "{base_url}/buckets/{project_id}/card_tables/cards/{cardtablecard_id}.json"
     LIST_URL = "{base_url}/buckets/{project_id}/card_tables/lists/{cardtablecolumn_id}/cards.json"
+    UPDATE_URL = "{base_url}/buckets/{project_id}/card_tables/cards/{cardtablecard_id}.json"
+    MOVES_URL = "{base_url}/buckets/{project_id}/card_tables/cards/{cardtablecard_id}/moves.json"
 
 
     def get(self, project, cardtablecard):
@@ -79,3 +81,59 @@ class CardTableCards(_base.BasecampEndpoint):
             "due_on": due_date
         }
         return self._create(url, data)
+    
+    def update(self, project, cardtablecard, title=False, content=False, assignee_ids=False, due_on=False):
+        """
+        Update a CardTableCard.
+
+        :param project: a Project object or ID
+        :type project: projects.Project|int
+        :param card_id: a CardTableCard object or ID
+        :type card_id: CardTableCard|int
+        :param title: the title of the new card
+        :type title: str
+        :param content: the content of the new card
+        :type content: str
+        :param assignee_id: the assignee of the new card
+        :type assignee_id: int
+        :param due_date: the due date of the new card
+        :type due_date: str
+        :return: a CardTableCard object
+        :rtype: CardTableCard
+        """
+        project_id, card_id = project, cardtablecard
+        url = self.UPDATE_URL.format(base_url=self.url, project_id=project_id, cardtablecard_id=card_id)
+        if title is False and content is False and assignee_ids is False and due_on is False:
+            raise ValueError("Nothing about this TodoItem would be modified.")
+        
+        data = {}
+        if title is not False:
+            data['title'] = title
+        if content is not False:
+            data['content'] = content
+        if assignee_ids is not False:
+            data['assignee_ids'] = assignee_ids
+        if due_on is not False:
+            data['due_on'] = self._normalize_date(due_on)
+
+        return self._update(url, data)
+    
+    def moves(self, project, card_id, destination_list_id):
+        """
+        Move a CardTableCard to a different CardTableColumn.
+
+        :param project: a Project object or ID
+        :type project: projects.Project|int
+        :param card_id: a CardTableCard object or ID
+        :type card_id: CardTableCard|int
+        :param destination_list_id: a CardTableColumn object or ID
+        :type destination_list_id: CardTableColumn|int
+        :return: the CardTableCard object
+        :rtype: CardTableCard
+        """
+        project_id, card_id, destination_list_id = project, card_id, destination_list_id
+        url = self.MOVES_URL.format(base_url=self.url, project_id=project_id, cardtablecard_id=card_id)
+        data = {
+            "column_id": destination_list_id
+        }
+        return self._moves(url, data)
